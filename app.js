@@ -32,7 +32,7 @@ app.get("/",(req,res)=>{
 
 const insertDocuments = function(db, callback) {
   // Get the documents collection
-  const collection1 = db.collection('excellence');
+  const collection1 = db.collection('candidate');
   const collection2 = db.collection('test_score');
 
   //Insert candidate
@@ -52,10 +52,9 @@ const insertDocuments = function(db, callback) {
   });
 }
 
-app.get("/",(req,res)=>{
-  let val = collection1.find();
-  res.send(val);
-});
+let gethighest = function(db,callback){collection1.findOne(ObjectId("608d2d028f5c5c06a872245e"))}
+let avgperround = function(db,callback){}
+
 
 //listen
 app.listen(8080,()=>console.log("Running on port 8080"));
