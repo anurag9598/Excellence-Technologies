@@ -37,7 +37,7 @@ const insertDocuments = function(db, callback) {
 
   //Insert candidate
  collection1.insertMany([
-   { name : "Anurag Chaudhary" , email : "nitin.anurag2012@gmail.com" }] , function(err, result) {
+   { name : "Anurag Chaudhary" , email : "nitin.anurag28@gmail.com" }] , function(err, result) {
     assert.equal(err, null);
     console.log("Inserted into the collection1");
     callback(result);
@@ -52,9 +52,25 @@ const insertDocuments = function(db, callback) {
   });
 }
 
-let gethighest = function(db,callback){collection1.findOne(ObjectId("608d2d028f5c5c06a872245e"))}
-let avgperround = function(db,callback){}
+let gethighest = function(db,callback){ let first = collection2.aggregate([{ $group : { _id : '$firstround',
+firstround : { $max : $firstround }}}]);
+                                       let second = collection2.aggregate([{ $group : { _id : '$secondround',
+firstround : { $max : $secondround }}}]);
+                                       let third = collection2.aggregate([{ $group : { _id : '$thirdround',
+firstround : { $max : $thirdround }}}]);
+                                       let max = (first > second) ? ((first>third)? first : third) : ((second > third)? second: third) ;
+                                       callback.send(max);
+                                      }
 
+let avgperround = function(db,callback){ let first = collection2.aggregate([{ $group : { _id : '$firstround',
+firstround : { $avg : $firstround }}}]);
+                                       let second = collection2.aggregate([{ $group : { _id : '$secondround',
+firstround : { $avg : $secondround }}}]);
+                                       let third = collection2.aggregate([{ $group : { _id : '$thirdround',
+firstround : { $avg : $thirdround }}}]);
+                                        let avg = (first+second+third)/3 ; 
+                                        callback.send(avg);
+                                       }
 
 //listen
 app.listen(8080,()=>console.log("Running on port 8080"));
